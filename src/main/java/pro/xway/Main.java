@@ -1,32 +1,24 @@
 package pro.xway;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Main {
-    static Connection connection;
-    static Statement statement;
 
     public static void main(String[] args) {
         try {
-            connect();
+            Statement statement = SqliteHandler.getStatement();
+
+            statement.executeUpdate("insert into students (name) values ('Olia')");
+            ResultSet rs = statement.executeQuery("select * from students;");
+            while (rs.next()){
+                System.out.println(rs.getInt(1) + " " + rs.getString(2));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            disconnect();
+            SqliteHandler.disconnect();
         }
+
     }
 
-    public static void connect() throws SQLException {
-            connection = DriverManager.getConnection("jdbc:sqlite:main.db");
-    }
-    public static void disconnect(){
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

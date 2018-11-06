@@ -5,10 +5,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SqlHandler {
+public class SqliteHandler {
     private static Connection connection;
 
-    private SqlHandler() {
+    private SqliteHandler() {
     }
 
     public static Connection getConnection() throws SQLException {

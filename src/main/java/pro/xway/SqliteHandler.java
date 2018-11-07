@@ -1,9 +1,7 @@
 package pro.xway;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Класс управляет подключением к базе данных и создает шаблоны для PreparedStatement
@@ -26,9 +24,9 @@ public class SqliteHandler {
             connection = DriverManager.getConnection("jdbc:sqlite:main.db");
             Statement statement = SqliteHandler.connection.createStatement();
             statement.executeUpdate(
-                    "CREATE TABLE if not exists products (" +
+                    "CREATE TABLE if not exists intervals (" +
                             " id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                            " name TEXT NOT NULL," +
+                            " counter INT NOT NULL," +
                             " dateCreate DATE NOT NULL );");
             statement.close();
         }
@@ -62,41 +60,26 @@ public class SqliteHandler {
     }
 
     /**
-     * Сооздаем экземпляр PreparedStatement для добавления продукта
+     * Сооздаем экземпляр PreparedStatement для добавления интервала
      * @return PreparedStatement
      * @throws SQLException
      */
-    private static PreparedStatement createPrepareStatementForAddProduct() throws SQLException {
+    private static PreparedStatement createPrepareStatementForAddInterval() throws SQLException {
 
         return getConnection().prepareStatement(
-                "INSERT INTO products (name, dateCreate) VALUES (?, '" +  new java.sql.Date(new Date().getTime()) +"');");
+                "INSERT INTO intervals (counter, dateCreate) VALUES (?, '" +  new java.sql.Date(new Date().getTime()) +"');");
     }
 
     /**
-     * Добовляем продукт в БД
-     * @param productName
+     * Добовляем интервал в БД
+     * @param numberInterval
      * @throws SQLException
      */
-    public static void addProduct(String productName) throws SQLException {
-        PreparedStatement preparedStatement = createPrepareStatementForAddProduct();
-        preparedStatement.setString(1, productName);
+    public static void incrementCounter(int numberInterval) throws SQLException {
+        PreparedStatement preparedStatement = createPrepareStatementForAddInterval();
+        preparedStatement.setString(1, String.valueOf(numberInterval));
         preparedStatement.executeUpdate();
-        Log.getInstance().getLogger(Main.class).info("product " + productName + " added ");
+        Log.getInstance().getLogger(Main.class).info("interval " + numberInterval + " added");
     }
 
-    /**
-     * Добовляем лист продуктов в БД
-     * @param products
-     * @throws SQLException
-     */
-    public static void addProducts(List<String> products) throws SQLException {
-        PreparedStatement preparedStatement = createPrepareStatementForAddProduct();
-        connection.setAutoCommit(false);
-        for (String productName : products) {
-            preparedStatement.setString(1, productName);
-            preparedStatement.addBatch();
-        }
-        preparedStatement.executeBatch();
-        connection.setAutoCommit(true);
-    }
 }

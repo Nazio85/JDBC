@@ -15,7 +15,10 @@ public class Log {
     private Handler fileHandler;
 
     public static Log getInstance() {
-        if (ourInstance == null) ourInstance = new Log();
+        if (ourInstance == null)
+            synchronized (Log.class) {
+                ourInstance = new Log();
+            }
 
         return ourInstance;
     }
@@ -31,6 +34,7 @@ public class Log {
 
     /**
      * Добавляет Logger'у FileHandler
+     *
      * @param logger
      */
     private void createFileHandler(Logger logger) {

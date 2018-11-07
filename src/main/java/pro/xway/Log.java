@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.logging.*;
 
+/**
+ * Класс создает логер и пишет копию в файл.
+ * @author Хайрутдинов Александр
+ *
+ */
 public class Log {
     private static Log ourInstance;
     private Handler fileHandler;
@@ -24,10 +29,14 @@ public class Log {
         return logger;
     }
 
+    /**
+     * Добавляет Logger'у FileHandler
+     * @param logger
+     */
     private void createFileHandler(Logger logger) {
         try {
             if (fileHandler == null) {
-                fileHandler = new FileHandler("log" + LocalDate.now() + ".txt");
+                fileHandler = new FileHandler(LocalDate.now() + ".log");
                 fileHandler.setLevel(Level.ALL);
                 fileHandler.setFormatter(new SimpleFormatter());
             }

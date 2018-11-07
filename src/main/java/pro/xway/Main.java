@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(() -> addProductToBd(ORANGE),
-                0, 1, TimeUnit.SECONDS);
+                0, 1, TimeUnit.HOURS);
     }
 
     public static void addProductToBd(String productName) {

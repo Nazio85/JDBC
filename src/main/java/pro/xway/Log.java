@@ -34,7 +34,7 @@ public class Log {
 
             logger.addHandler(fileHandler);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(e.getMessage());
         }
     }
 }
